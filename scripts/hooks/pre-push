@@ -1,0 +1,40 @@
+#!/bin/bash
+# pre-push hook — jolarca-identity
+#
+# Compensating control for GitHub Free limitation:
+# server-side secret scanning is not available for private repos on the free
+# plan. This hook runs gitleaks locally before every push to prevent secrets
+# from reaching the remote.
+#
+# Install: scripts/install-hooks.sh
+# Requires: gitleaks (https://github.com/gitleaks/gitleaks)
+#
+# SOC 2 CC6.1 · ISO 27001:2022 A.5.17 · PCI-DSS Req 8
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# --- Pre-flight: is gitleaks installed? ---
+if ! command -v gitleaks &>/dev/null; then
+  echo "⚠  gitleaks not found — skipping secret scan"
+  echo "   Install: https://github.com/gitleaks/gitleaks#installing"
+  echo "   Or run:  scripts/install-hooks.sh --skip-if-missing"
+  exit 0
+fi
+
+echo "🔍 Running gitleaks secret scan (pre-push)..."
+
+# --- Scan staged content ---
+# `gitleaks protect --staged` scans files in the staging area.
+# This catches secrets that were committed but not yet pushed.
+if gitleaks protect --staged --source "$REPO_ROOT" --no-banner --redact 2>&1; then
+  echo "✓  gitleaks: no secrets detected in staged changes"
+  exit 0
+else
+  echo ""
+  echo "✗  gitleaks: SECRETS DETECTED — push blocked"
+  echo "   Remove the secret, rotate the credential, and try again."
+  echo "   If this is a false positive, add a .gitleaksignore entry."
+  exit 1
+fi
