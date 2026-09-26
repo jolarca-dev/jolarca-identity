@@ -1,0 +1,21 @@
+# IDE
+.idea/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets (jolarca-control policy/repo-defaults.yml)
+*.pem
+*.key
+*.p12
+secrets.json
+credentials.json
+.env
+.env.*
