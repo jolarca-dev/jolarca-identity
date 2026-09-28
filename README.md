@@ -41,7 +41,9 @@ proof-of-compliance.
 ```
 jolarca-identity/
 ├── .github/
-│   └── CODEOWNERS                  # Code ownership (ADR-0004 R4)
+│   ├── CODEOWNERS                  # Code ownership (ADR-0004 R4)
+│   └── workflows/
+│       └── ci.yml                  # CI: gitleaks history scan + shellcheck
 ├── policies/
 │   ├── access-control-policy.md    # Master access control policy (A.5.15, CC6.1)
 │   ├── authentication-standards.md # Authentication requirements (A.5.17, CC6.3)
@@ -54,9 +56,17 @@ jolarca-identity/
 │   └── role-definitions.md         # Role catalogue and permission matrix
 ├── metrics/
 │   └── access-review-metrics.md    # KPIs and reporting for access reviews
+├── scripts/
+│   ├── hooks/
+│   │   ├── pre-commit              # gitleaks scan of staged changes
+│   │   └── pre-push                # gitleaks scan before push
+│   └── install-hooks.sh            # Hook installer (run after cloning)
+├── .gitignore
+├── CONTRIBUTING.md                 # Contribution workflow and compliance gates
 ├── SECURITY.md                     # Vulnerability disclosure policy
 ├── README.md                       # This file
-└── LICENSE                         # License (if applicable)
+├── pyproject.toml                  # Python project metadata (docs-only repo)
+└── LICENSE                         # Proprietary — All Rights Reserved
 ```
 
 ## Compliance Framework Mapping
@@ -70,9 +80,11 @@ jolarca-identity/
 
 ## Current Status
 
-**Planned.** This repository is declared in the
+**Operational.** Published at
+[`jolarca-dev/jolarca-identity`](https://github.com/jolarca-dev/jolarca-identity)
+and declared in the
 [`jolarca-control`](https://github.com/jolarca-dev/jolarca-control) fleet
-allow-list (`repos/jolarca-identity.yml`) but is not yet populated on GitHub.
+allow-list (`repos/jolarca-identity.yml`).
 
 ### Known Dependencies
 
@@ -85,12 +97,12 @@ allow-list (`repos/jolarca-identity.yml`) but is not yet populated on GitHub.
 
 ## Contributing
 
-See [`CONTRIBUTING.md`](https://github.com/jolarca-dev/jolarca-control/blob/main/CONTRIBUTING.md)
-in `jolarca-control`. Changes to IAM policy are **security changes** and
-require the full compliance gate set: dependency scan, secret scan, license
-check, code quality, and security review.
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the branch → signed commit →
+PR → review workflow and the local hook setup. Changes to IAM policy are
+**security changes** and require the full compliance gate set: secret scan,
+lint, and security review.
 
 ## License
 
-This repository contains governance policy, not software. No OSS license is
-declared. See `jolarca-control` for the governance framework.
+Proprietary — All Rights Reserved. See [`LICENSE`](LICENSE). This repository
+contains governance policy, not software; no OSS license is granted.
