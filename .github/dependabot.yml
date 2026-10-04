@@ -7,9 +7,14 @@ version: 2
 # version comment, so it satisfies AGENTS.md §5 rather than fighting it.
 #
 # Ecosystems are derived from tracked manifests, per the parity rule
-# jolarca-hermes-agents enforces in tests/test_dependabot_coverage.py:
-# pyproject.toml is tracked and declares [project] dependencies, so pip is
-# honest here; .github/workflows/ci.yml exists, so github-actions is too.
+# jolarca-hermes-agents enforces in tests/test_dependabot_coverage.py.
+# pyproject.toml is tracked, so pip is a valid ecosystem -- but state the
+# measured fact: it declares dependencies = [], i.e. ZERO third-party
+# requirements today. Expect no pip PRs until a dependency is actually
+# declared; the entry is prospective, not active. (jolarca-hermes-agents is in
+# the same posture: its pyproject has no dependencies key at all, yet it
+# declares pip.) github-actions is live now: .github/workflows/ci.yml exists
+# and holds two SHA-pinned refs.
 updates:
   - package-ecosystem: github-actions
     directory: /
