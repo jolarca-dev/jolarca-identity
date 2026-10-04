@@ -15,7 +15,6 @@ concurrency:
 
 jobs:
   secret-scan:
-    name: gitleaks (full history)
     runs-on: ubuntu-latest
     env:
       # Pinned to the version validated locally. Bump deliberately, not blindly.
@@ -37,7 +36,6 @@ jobs:
         run: gitleaks detect --source . --log-opts="--all" --no-banner --redact --exit-code 1
 
   lint:
-    name: shellcheck
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
