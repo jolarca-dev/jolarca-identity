@@ -1,0 +1,9 @@
+# Initial local toolchain adoption; see MISE-ADOPTION.md for validation limits.
+[tools]
+shellcheck = "0.11.0"
+
+[tasks.toolchain]
+description = "Print selected tool versions; this is not a compliance gate"
+run = [
+  "shellcheck --version",
+]
